@@ -2,6 +2,8 @@
 
 Playwright + Python + pytest suite following [Playwright testing practices](https://playwright.dev/docs/best-practices): semantic locators, web-first `expect()` assertions, Page Object Model, YAML config, pipeline video capture, and optional **Claude Sonnet 4.6** summaries with **email** and **Telegram** notifications.
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/charleyrutledge)
+
 ## Quick start
 
 ```powershell
@@ -136,3 +138,11 @@ Enable notification blocks in `settings.yaml` (or use `settings.example.yaml` as
 2. Extend `BasePage` with role/label helpers.
 3. Call `self.step("...")` for HTML report screenshots.
 4. Add tests under `tests/`.
+
+## Support this project
+
+If this suite saves you time, you can support ongoing work with a small donation:
+
+**[Buy Me a Coffee](https://buymeacoffee.com/charleyrutledge)**
+
+GitHub also shows a **Sponsor** link on the repo (from [`.github/FUNDING.yml`](.github/FUNDING.yml)). If your Buy Me a Coffee username is not `charleyrutledge`, update that file and the links above to match your profile URL.
