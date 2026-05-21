@@ -1,0 +1,4 @@
+# Optional: Cursor MCP fetch server and uv (for uvx-based MCP configs)
+-r requirements.txt
+mcp-server-fetch
+uv

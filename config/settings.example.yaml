@@ -1,0 +1,38 @@
+base_url: "https://your-app.example.com"
+browser: chromium
+headless: true
+timeout_ms: 30000
+slow_mo_ms: 0
+
+viewport:
+  width: 1280
+  height: 720
+
+strict_selectors: true
+screenshot_full_page: true
+
+artifacts:
+  video: on
+  tracing: retain-on-failure
+  navigation_wait_until: domcontentloaded
+
+ai:
+  enabled: true
+  model: claude-sonnet-4-6
+  max_tokens: 2048
+
+notifications:
+  email:
+    enabled: true
+    smtp_host: smtp.gmail.com
+    smtp_port: 587
+    smtp_user: "${EMAIL_SMTP_USER}"
+    smtp_password: "${EMAIL_SMTP_PASSWORD}"
+    use_tls: true
+    from_addr: automation@yourcompany.com
+    to_addrs:
+      - qa@yourcompany.com
+  telegram:
+    enabled: true
+    bot_token: "${TELEGRAM_BOT_TOKEN}"
+    chat_id: "${TELEGRAM_CHAT_ID}"

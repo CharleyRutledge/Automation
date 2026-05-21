@@ -1,0 +1,42 @@
+# Web UI automation defaults (override via WEB_UI_CONFIG or pytest --config)
+
+base_url: "https://playwright.dev"
+browser: chromium
+headless: true
+timeout_ms: 30000
+slow_mo_ms: 0
+
+viewport:
+  width: 1280
+  height: 720
+
+strict_selectors: true
+screenshot_full_page: true
+
+# Playwright artifacts (CI forces video: on)
+artifacts:
+  video: on
+  tracing: retain-on-failure
+  navigation_wait_until: domcontentloaded
+
+# Claude Sonnet 4.6 — set ANTHROPIC_API_KEY and enabled: true
+ai:
+  enabled: false
+  model: claude-sonnet-4-6
+  max_tokens: 2048
+
+notifications:
+  email:
+    enabled: false
+    smtp_host: smtp.example.com
+    smtp_port: 587
+    smtp_user: "${EMAIL_SMTP_USER}"
+    smtp_password: "${EMAIL_SMTP_PASSWORD}"
+    use_tls: true
+    from_addr: automation@example.com
+    to_addrs:
+      - qa-team@example.com
+  telegram:
+    enabled: true
+    bot_token: "${TELEGRAM_BOT_TOKEN}"
+    chat_id: "${TELEGRAM_CHAT_ID}"

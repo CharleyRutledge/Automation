@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+
+# Test / Playwright artifacts
+.pytest_cache/
+test-results/
+reports/
+htmlcov/
+.coverage
+
+# IDE
+.idea/
+.vscode/
+*.swp
