@@ -8,3 +8,9 @@ PyYAML>=6.0.1,<7
 # AI summaries + Telegram (optional; enable in config/settings.yaml)
 anthropic>=0.49.0,<1
 requests>=2.32.0,<3
+
+# PTA model (trace equivalence detection)
+imagehash>=4.3.1,<5
+Pillow>=10.0.0,<12
+networkx>=3.0,<4
+numpy>=1.24.0,<3
