@@ -7,7 +7,7 @@ Playwright + Python + pytest suite following [Playwright testing practices](http
 ## Quick start
 
 ```powershell
-cd C:\Users\amkei\Repos\Automation
+
 python -m pip install -r requirements.txt
 python -m playwright install chromium
 python -m ui_automation --open
