@@ -9,6 +9,10 @@ if TYPE_CHECKING:
     from ui_automation.reporting.summary import RunSummary
 
 
+def _is_unresolved(value: str) -> bool:
+    return "${" in value
+
+
 def send_run_telegram(
     summary: RunSummary,
     telegram: TelegramSettings,
@@ -16,6 +20,9 @@ def send_run_telegram(
     ai_summary: str | None = None,
 ) -> None:
     if not telegram.enabled or not telegram.bot_token or not telegram.chat_id:
+        return
+    if _is_unresolved(telegram.bot_token) or _is_unresolved(telegram.chat_id):
+        print("Telegram notification skipped: bot_token/chat_id not resolved (missing env vars)")
         return
 
     lines = [

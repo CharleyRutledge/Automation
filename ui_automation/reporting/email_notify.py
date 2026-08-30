@@ -10,6 +10,10 @@ if TYPE_CHECKING:
     from ui_automation.reporting.summary import RunSummary
 
 
+def _is_unresolved(value: str) -> bool:
+    return "${" in value
+
+
 def send_run_email(
     summary: RunSummary,
     email: EmailSettings,
@@ -20,6 +24,9 @@ def send_run_email(
         return
     if not email.from_addr:
         raise ValueError("notifications.email.from_addr is required when email is enabled")
+    if _is_unresolved(email.smtp_user) or _is_unresolved(email.smtp_password):
+        print("Email notification skipped: smtp_user/smtp_password not resolved (missing env vars)")
+        return
 
     subject = f"[UI Automation] {summary.short_status()}"
     body_lines = [

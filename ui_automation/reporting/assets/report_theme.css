@@ -1,0 +1,25 @@
+/* Force a light theme so browsers/OS dark-mode don't auto-invert the
+   pytest-html default report (which never declares background/color-scheme
+   itself, causing an unreadable dark-inverted render). */
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333;
+}
+
+#environment,
+#results-table {
+  background-color: #ffffff;
+}
+
+.results-table-row td {
+  background-color: #ffffff;
+}
+
+.media-container__viewport,
+.media-container {
+  background-color: #f6f6f6;
+}

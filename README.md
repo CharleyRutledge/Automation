@@ -1,6 +1,6 @@
 # Web UI Automation
 
-Playwright + Python + pytest suite following [Playwright testing practices](https://playwright.dev/docs/best-practices): semantic locators, web-first `expect()` assertions, Page Object Model, YAML config, pipeline video capture, and optional **Claude Sonnet 4.6** summaries with **email** and **Telegram** notifications.
+Playwright + Python + pytest suite following [Playwright testing practices](https://playwright.dev/docs/best-practices): semantic locators, web-first `expect()` assertions, Page Object Model, YAML config, pipeline video capture, and optional **Claude Sonnet 5** summaries with **email** and **Telegram** notifications.
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/charleyrutledge)
 
@@ -27,6 +27,19 @@ python -m ui_automation --open
 Invoke-Item .\reports\latest\report.html
 ```
 
+## Dashboard (optional local UI)
+
+Browse past runs and trigger new ones from a small local web page instead of the CLI:
+
+```powershell
+python -m pip install -r requirements-ui.txt
+python -m ui_automation --ui
+```
+
+Opens at `http://127.0.0.1:8501` by default (`--ui-port` to change it). Lists every run under
+`reports/` with pass/fail/skip/error counts, a **Run tests** button, and a link to each run's
+HTML report.
+
 ## Playwright best practices in this repo
 
 - **Locators** in `pages/locators/` — `get_by_role`, `get_by_label`, `get_by_test_id` (not CSS/XPath-only).
@@ -50,9 +63,9 @@ The CLI passes `--video` and stores output under `reports/<timestamp>/playwright
 
 In **GitHub Actions** (`CI=true`), video is always forced to `on`. Workflow uploads `reports/**/videos/**/*.webm` as artifacts.
 
-## Claude Sonnet 4.6 (AI)
+## Claude Sonnet 5 (AI)
 
-Uses the Anthropic API with model **`claude-sonnet-4-6`**.
+Uses the Anthropic API with model **`claude-sonnet-5`**.
 
 1. Set `ANTHROPIC_API_KEY`.
 2. In `config/settings.yaml`:
@@ -60,7 +73,7 @@ Uses the Anthropic API with model **`claude-sonnet-4-6`**.
 ```yaml
 ai:
   enabled: true
-  model: claude-sonnet-4-6
+  model: claude-sonnet-5
   max_tokens: 2048
 ```
 

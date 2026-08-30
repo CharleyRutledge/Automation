@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import shutil
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -52,9 +54,9 @@ def build_summary(session: pytest.Session, exitstatus: int, run_dir: Path) -> Ru
     reporter = session.config.pluginmanager.get_plugin("terminalreporter")
     if reporter is not None:
         for key, stat_key in (("passed", "passed"), ("failed", "failed"), ("skipped", "skipped")):
-            items = getattr(reporter.stats, key, []) or []
+            items = reporter.stats.get(key, []) or []
             setattr(summary, stat_key, len(items))
-        summary.errors = len(getattr(reporter.stats, "error", []) or [])
+        summary.errors = len(reporter.stats.get("error", []) or [])
 
     output = session.config.getoption("--output")
     if output:
@@ -65,8 +67,30 @@ def build_summary(session: pytest.Session, exitstatus: int, run_dir: Path) -> Ru
     return summary
 
 
+def write_summary_json(summary: RunSummary, run_dir: Path) -> Path:
+    """Persist a small machine-readable summary the web dashboard can read without parsing HTML."""
+    payload = {
+        "run_id": run_dir.name,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "exit_status": summary.exit_status,
+        "ok": summary.ok,
+        "passed": summary.passed,
+        "failed": summary.failed,
+        "skipped": summary.skipped,
+        "errors": summary.errors,
+        "total": summary.total,
+        "report_html": summary.report_html.name if summary.report_html else None,
+        "video_count": len(summary.video_files),
+        "trace_count": len(summary.trace_files),
+    }
+    path = run_dir / "summary.json"
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return path
+
+
 def finalize_run(session: pytest.Session, exitstatus: int, settings: Settings, run_dir: Path) -> None:
     summary = build_summary(session, exitstatus, run_dir)
+    write_summary_json(summary, run_dir)
 
     ai_text: str | None = None
     try:

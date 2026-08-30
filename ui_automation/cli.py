@@ -52,6 +52,10 @@ def publish_latest_report(run_dir: Path, root: Path) -> Path:
     if claude_src.is_file():
         shutil.copy2(claude_src, latest_dir / "claude_summary.txt")
 
+    summary_src = run_dir / "summary.json"
+    if summary_src.is_file():
+        shutil.copy2(summary_src, latest_dir / "summary.json")
+
     return dst
 
 
@@ -86,6 +90,17 @@ def main(argv: list[str] | None = None) -> int:
         help="Open the HTML report in the default browser after the run.",
     )
     parser.add_argument(
+        "--ui",
+        action="store_true",
+        help="Launch the local dashboard (browse past runs, trigger new ones) instead of running tests.",
+    )
+    parser.add_argument(
+        "--ui-port",
+        type=int,
+        default=8501,
+        help="Port for --ui (default: 8501).",
+    )
+    parser.add_argument(
         "--config",
         dest="config",
         default=None,
@@ -103,6 +118,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.setup:
         return setup_project(root, include_mcp=args.with_mcp)
 
+    if args.ui:
+        from ui_automation.webui import run_dashboard
+
+        run_dashboard(port=args.ui_port)
+        return 0
+
     pytest_args = list(args.pytest_args)
     if pytest_args and pytest_args[0] == "--":
         pytest_args = pytest_args[1:]
@@ -119,6 +140,7 @@ def main(argv: list[str] | None = None) -> int:
         os.environ.setdefault("CI", "true")
 
     html_report = run_dir / "report.html"
+    report_css = root / "ui_automation" / "reporting" / "assets" / "report_theme.css"
     cmd = [
         sys.executable,
         "-m",
@@ -126,6 +148,7 @@ def main(argv: list[str] | None = None) -> int:
         str(root / "tests"),
         f"--html={html_report}",
         "--self-contained-html",
+        f"--css={report_css}",
         f"--output={playwright_output}",
         f"--video={settings.video_mode}",
         f"--tracing={settings.tracing_mode}",
